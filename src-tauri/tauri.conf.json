@@ -20,8 +20,8 @@
     "windows": [
       {
         "title": "ppu",
-        "width": 800,
-        "height": 600
+        "width": 1080,
+        "height": 1200
       }
     ],
     "security": {
