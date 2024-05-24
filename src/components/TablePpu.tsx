@@ -86,16 +86,16 @@ const data: RowData[] = [
   {
     ppu: 1,
     date: '2024-05-23',
-    author: 'John Doe',
-    object: 'System Upgrade',
-    type: 'Hardware',
+    author: 'Алексей Туманов',
+    object: 'Обновление системы',
+    type: 'ПО',
   },
   {
     ppu: 2,
     date: '2024-05-24',
-    author: 'Jane Smith',
-    object: 'Security Patch',
-    type: 'Software',
+    author: 'Автор Тест',
+    object: 'Тест',
+    type: 'Тип',
   }
 ];
 
