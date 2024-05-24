@@ -16,3 +16,8 @@
     height: rem(21px);
     border-radius: rem(21px);
   }
+
+  /*Это просто тест, можешь удалять*/
+  .entry:hover {
+    border: 10px solid red;
+  }

@@ -12,6 +12,38 @@ import {
 } from '@mantine/core';
 import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
 import classes from '../styles/TableSort.module.css';
+import { invoke } from "@tauri-apps/api/tauri";
+import SliderMenu from './SliderMenu'; 
+
+/*
+
+Нужно сделать так, чтобы боковое меню появлялось при нажатии на запись в таблице 
+и + к этому выводило бы ppu записи на которую было нажатие. 
+
+То что сейчас записи при наведении выделяются красным это просто тест, потом надо будет убрать.
+
+Нужно подключить бд, можно попробовать поставить оракловскую, но я уже впринципе скопировал
+Главную таблицу в MySQL.
+
+ЗАПУСК ПРОЕКТА:
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+cd ppu
+npm run tauri dev
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+ЕСЛИ НУЖНО ЗАПУСТИТЬ ЧИСТО REACT БЕЗ TAURI: 
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+npm run dev 
+o
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+*/
 
 interface RowData {
   ppu: number;
@@ -119,7 +151,7 @@ export function TableSort() {
   };
 
   const rows = sortedData.map((row) => (
-    <Table.Tr key={row.ppu}>
+    <Table.Tr key={row.ppu} className = {classes.entry} onClick={() => console.log(row.ppu)}>
       <Table.Td>{row.ppu}</Table.Td>
       <Table.Td>{row.date}</Table.Td>
       <Table.Td>{row.author}</Table.Td>
