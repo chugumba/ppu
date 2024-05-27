@@ -1,44 +1,46 @@
 import { Button, Paper } from '@mantine/core';
-import React, {useState} from 'react';
-import style from '../styles/styles.module.css'
+import React, { useState, useEffect } from 'react';
+//import style from '../styles/styles.module.css';
 
-export default function SliderMenu() {
- 
+interface SliderMenuProps {
+  number: number | null;
+  onNumPpuChange: (numPpu: number | null) => void;
+}
+export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) {
+  const [isPanelOpen, setIsPanelOpen] = useState(false);
 
-    //Нужно экспортировать handleButtonClick либо в App либо в TablePpu и 
-    //сделать, чтобы оно меняло содержимое внутри Paper
+  const handlePanelOpen = () => {
+    setIsPanelOpen(true);
+  };
 
-     const [isPanelOpen,setIsPanelopen] = useState(false);
+  const handlePanelClose = () => {
+    onNumPpuChange(null)
+    setIsPanelOpen(false);
+  };
 
-     const handleButtonClick = () => {
-        setIsPanelopen(true);
-     }
-
-     const handlePanelClose = () => {
-        setIsPanelopen(false)
-     }
-
-
-     //Наверное это стоит потом перенести в отдельный css файл, но пока не трогаем
-     //Возможно удобнее будет работать с выезжающей менюшкой
-
-     const panelStyle: React.CSSProperties = {
-        position: 'fixed',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        width: '50%',
-        transform: isPanelOpen ? 'translateX(0)' : 'translateX(100%)',
-        transition: 'transform 0.3s ease-out',
-    };  
-
+  const panelStyle: React.CSSProperties = {
+    position: 'fixed',
+    top: 0,
+    right: 0,
+    bottom: 0,
+    width: '50%',
+    transform: isPanelOpen ? 'translateX(0)' : 'translateX(100%)',
+    transition: 'transform 0.3s ease-out',
+  };
+  //Открывает меню при изменении значения пропа
+  useEffect(() => {
+    if(number != null)
+    handlePanelOpen(); 
+  }, [number]);
+  
   return (
     <>
-        <Button className={style.clickButton} id="open-panel-button" onClick={handleButtonClick}> Открыть панель</Button>
-        <Paper style={panelStyle} shadow="sm" radius="xs" p="xl">
-            <Button id="close-panel-button" onClick={handlePanelClose}>Закрыть панель</Button>
-        </Paper>
+      <Paper style={panelStyle} shadow="sm" radius="xs" p="xl">
+        <Button onClick={handlePanelClose}>
+          Закрыть панель
+        </Button>
+        <p>Number: {number}</p>
+      </Paper>
     </>
   );
 };
-

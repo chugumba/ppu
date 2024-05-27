@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import styles from '../styles/TableSort.module.css'
-//import SliderMenu from './SliderMenu';
 import {
   Table,
   ScrollArea,
@@ -14,37 +13,8 @@ import {
 } from '@mantine/core';
 import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
 import classes from '../styles/TableSort.module.css';
+
 //import { invoke } from "@tauri-apps/api/tauri";
-
-/*
-
-Нужно сделать так, чтобы боковое меню появлялось при нажатии на запись в таблице 
-и + к этому выводило бы ppu записи на которую было нажатие. 
-
-То что сейчас записи при наведении выделяются красным это просто тест, потом надо будет убрать.
-
-Нужно подключить бд, можно попробовать поставить оракловскую, но я уже впринципе скопировал
-Главную таблицу в MySQL.
-
-ЗАПУСК ПРОЕКТА:
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-cd ppu
-npm run tauri dev
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-ЕСЛИ НУЖНО ЗАПУСТИТЬ ЧИСТО REACT БЕЗ TAURI: 
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-npm run dev 
-o
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-*/
 
 interface RowData {
   ppu: number;
@@ -139,7 +109,11 @@ const data: RowData[] = [
   }
 ];
 
-export function TableSort() {
+interface TableSortProps {
+  onNumPpuChange: (numPpu: number) => void;
+}
+
+export function TableSort({ onNumPpuChange }:TableSortProps) {
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -159,8 +133,8 @@ export function TableSort() {
   };
 
   const rows = sortedData.map((row) => (
-    /*<Table.Tr key={row.ppu} className = {classes.entry} onClick={() => console.log(row.ppu)}>*/
-    <Table.Tr key={row.ppu} className={classes.entry} onClick={() => document.getElementById('open-panel-button').click()} >
+
+    <Table.Tr key={row.ppu} className={classes.entry} onClick={() => onNumPpuChange(row.ppu)} >
       <Table.Td>{row.ppu}</Table.Td>
       <Table.Td>{row.date}</Table.Td>
       <Table.Td>{row.author}</Table.Td>
@@ -225,7 +199,7 @@ export function TableSort() {
             <Table.Tr>
               <Table.Td colSpan={Object.keys(data[0]).length}>
                 <Text fw={500} ta="center">
-                  Nothing found
+                  Ничего не найдено
                 </Text>
               </Table.Td>
             </Table.Tr>
