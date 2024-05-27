@@ -85,6 +85,7 @@ function sortData(
   );
 }
 
+//Тут данные для заполнения таблицы, нужно заменить на БД
 const data: RowData[] = [
   {
     ppu: 1,

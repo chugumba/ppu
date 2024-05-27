@@ -27,6 +27,7 @@ export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) 
     transform: isPanelOpen ? 'translateX(0)' : 'translateX(100%)',
     transition: 'transform 0.3s ease-out',
   };
+  
   //Открывает меню при изменении значения пропа
   useEffect(() => {
     if(number != null)
