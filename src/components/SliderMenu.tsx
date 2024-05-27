@@ -1,5 +1,6 @@
 import { Button, Paper } from '@mantine/core';
 import React, {useState} from 'react';
+import style from '../styles/styles.module.css'
 
 export default function SliderMenu() {
  
@@ -33,9 +34,9 @@ export default function SliderMenu() {
 
   return (
     <>
-        <Button onClick={handleButtonClick}> Открыть панель</Button>
+        <Button className={style.clickButton} id="open-panel-button" onClick={handleButtonClick}> Открыть панель</Button>
         <Paper style={panelStyle} shadow="sm" radius="xs" p="xl">
-            <Button onClick={handlePanelClose}>Закрыть панель</Button>
+            <Button id="close-panel-button" onClick={handlePanelClose}>Закрыть панель</Button>
         </Paper>
     </>
   );

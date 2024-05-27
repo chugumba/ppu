@@ -4,7 +4,10 @@ import '@mantine/core/styles.css';
 import { MantineProvider } from '@mantine/core';
 import { TableSort } from "./components/TablePpu";
 import SliderMenu from './components/SliderMenu';
-import Header from './components/Header';
+import React from 'react';
+//import Header from './components/Header';
+
+const currentPpu = React.createContext('');
 
 function App() {
 
@@ -12,9 +15,12 @@ function App() {
     
     <MantineProvider>
       
-      <TableSort/>
-      <SliderMenu/>
-      <Header />
+      <currentPpu.Provider value = ''>
+        <TableSort/>
+        <SliderMenu/>
+      </currentPpu.Provider>
+  
+      {/*<Header />*/}
 
     </MantineProvider>
 

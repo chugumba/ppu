@@ -38,3 +38,7 @@
 
 
 /*MAIN_CONTAINER CSS*/
+
+.clickButton {
+    display: none;
+}

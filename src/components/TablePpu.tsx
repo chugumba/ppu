@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import styles from '../styles/TableSort.module.css'
+//import SliderMenu from './SliderMenu';
 import {
   Table,
   ScrollArea,
@@ -12,8 +14,7 @@ import {
 } from '@mantine/core';
 import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
 import classes from '../styles/TableSort.module.css';
-import { invoke } from "@tauri-apps/api/tauri";
-import SliderMenu from './SliderMenu'; 
+//import { invoke } from "@tauri-apps/api/tauri";
 
 /*
 
@@ -128,6 +129,13 @@ const data: RowData[] = [
     author: 'Автор Тест',
     object: 'Тест',
     type: 'Тип',
+  },
+  {
+    ppu: 3,
+    date: '2024-05-25',
+    author: 'Антон Кузнецов',
+    object: 'Письмо',
+    type: 'Типо',
   }
 ];
 
@@ -151,7 +159,8 @@ export function TableSort() {
   };
 
   const rows = sortedData.map((row) => (
-    <Table.Tr key={row.ppu} className = {classes.entry} onClick={() => console.log(row.ppu)}>
+    /*<Table.Tr key={row.ppu} className = {classes.entry} onClick={() => console.log(row.ppu)}>*/
+    <Table.Tr key={row.ppu} className={classes.entry} onClick={() => document.getElementById('open-panel-button').click()} >
       <Table.Td>{row.ppu}</Table.Td>
       <Table.Td>{row.date}</Table.Td>
       <Table.Td>{row.author}</Table.Td>
@@ -162,14 +171,14 @@ export function TableSort() {
 
   return (
     <ScrollArea>
-      <TextInput
+      <TextInput className={styles.searchField}
         placeholder="Search by any field"
         mb="md"
         leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         value={search}
         onChange={handleSearchChange}
       />
-      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
+      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed" className={styles.tableField}>
         <Table.Tbody>
           <Table.Tr>
             <Th
