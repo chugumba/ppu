@@ -3,7 +3,8 @@ use mysql::prelude::*;
 use serde::{Serialize, Deserialize};
 use std::fs::File;
 use std::io::Read;
-use base64::encode;
+use base64::engine::general_purpose::STANDARD;
+use base64::Engine;
 use std::path::Path;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -46,7 +47,7 @@ pub fn get_sidebar(id: i32) -> Result<SideBar, Box<dyn std::error::Error>> {
                     let mut file = File::open(path)?;
                     let mut buffer = Vec::new();
                     file.read_to_end(&mut buffer)?;
-                    Some(encode(&buffer))
+                    Some(STANDARD.encode(&buffer))
                 } else {
                     None
                 }
