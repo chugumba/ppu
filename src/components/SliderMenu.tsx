@@ -1,12 +1,23 @@
-import { Button, Paper } from '@mantine/core';
+import { Button, Paper, Text } from '@mantine/core';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/styles.module.css';
 import photo from '../images/photo.jpg';
+import { invoke } from '@tauri-apps/api/tauri';
 
 interface SliderMenuProps {
   number: number | null;
   onNumPpuChange: (numPpu: number | null) => void;
 }
+
+interface FastRealization {
+  id: number;
+  author: string;
+  numPpu: number;
+  problem: string;
+  proposal: string;
+  photo: string;
+}
+
 export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
 
@@ -31,8 +42,15 @@ export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) 
   
   //Открывает меню при изменении значения пропа
   useEffect(() => {
-    if(number != null)
-    handlePanelOpen(); 
+
+      const fetchData = async () =>{
+        if(number != null){
+    const result:[any] = await invoke('get_fast_realization', { number });
+    const fastRealization: FastRealization | null = result[0].data;
+    console.log(fastRealization)
+    handlePanelOpen(); }
+  }
+  fetchData();
   }, [number]);
   
   return (

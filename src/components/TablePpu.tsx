@@ -147,7 +147,7 @@ export function TableSort({ onNumPpuChange }:TableSortProps) {
   return (
     <ScrollArea>
       <TextInput className={styles.searchField}
-        placeholder="Search by any field"
+        placeholder="Поиск по всем полям"
         mb="md"
         leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         value={search}
