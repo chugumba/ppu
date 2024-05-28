@@ -14,14 +14,14 @@ import {
 import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
 import classes from '../styles/TableSort.module.css';
 
-//import { invoke } from "@tauri-apps/api/tauri";
+import { invoke } from "@tauri-apps/api/tauri";
 
 interface RowData {
-  ppu: number;
+  numppu: number;
   date: string;
   author: string;
   object: string;
-  type: string;
+  typeppu: string;
 }
 
 interface ThProps {
@@ -86,29 +86,7 @@ function sortData(
 }
 
 //Тут данные для заполнения таблицы, нужно заменить на БД
-const data: RowData[] = [
-  {
-    ppu: 1,
-    date: '2024-05-23',
-    author: 'Алексей Туманов',
-    object: 'Обновление системы',
-    type: 'ПО',
-  },
-  {
-    ppu: 2,
-    date: '2024-05-24',
-    author: 'Автор Тест',
-    object: 'Тест',
-    type: 'Тип',
-  },
-  {
-    ppu: 3,
-    date: '2024-05-25',
-    author: 'Антон Кузнецов',
-    object: 'Письмо',
-    type: 'Типо',
-  }
-];
+const data: RowData[] = await invoke('get_table', {});
 
 interface TableSortProps {
   onNumPpuChange: (numPpu: number) => void;
@@ -135,12 +113,12 @@ export function TableSort({ onNumPpuChange }:TableSortProps) {
 
   const rows = sortedData.map((row) => (
 
-    <Table.Tr key={row.ppu} className={classes.entry} onClick={() => onNumPpuChange(row.ppu)} >
-      <Table.Td>{row.ppu}</Table.Td>
+    <Table.Tr key={row.numppu} className={classes.entry} onClick={() => onNumPpuChange(row.numppu)} >
+      <Table.Td>{row.numppu}</Table.Td>
       <Table.Td>{row.date}</Table.Td>
       <Table.Td>{row.author}</Table.Td>
       <Table.Td>{row.object}</Table.Td>
-      <Table.Td>{row.type}</Table.Td>
+      <Table.Td>{row.typeppu}</Table.Td>
     </Table.Tr>
   ));
 
@@ -157,9 +135,9 @@ export function TableSort({ onNumPpuChange }:TableSortProps) {
         <Table.Tbody>
           <Table.Tr>
             <Th
-              sorted={sortBy === 'ppu'}
+              sorted={sortBy === 'numppu'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('ppu')}
+              onSort={() => setSorting('numppu')}
             >
               №ППУ
             </Th>
@@ -185,9 +163,9 @@ export function TableSort({ onNumPpuChange }:TableSortProps) {
               Объект улучшения
             </Th>
             <Th
-              sorted={sortBy === 'type'}
+              sorted={sortBy === 'typeppu'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('type')}
+              onSort={() => setSorting('typeppu')}
             >
               Тип ППУ
             </Th>

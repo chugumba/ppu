@@ -1,7 +1,6 @@
-import { Button, Paper, Text } from '@mantine/core';
+import { Button, Paper } from '@mantine/core';
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/styles.module.css';
-import photo from '../images/photo.jpg';
 import { invoke } from '@tauri-apps/api/tauri';
 
 interface SliderMenuProps {
@@ -12,22 +11,25 @@ interface SliderMenuProps {
 interface FastRealization {
   id: number;
   author: string;
-  numPpu: number;
+  numppu: number;
   problem: string;
   proposal: string;
-  photo: string;
+  photo: string | null;
+  department: number;
 }
 
 export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) {
   const [isPanelOpen, setIsPanelOpen] = useState(false);
+  const [fastRealization, setFastRealization] = useState<FastRealization | null>(null);
 
   const handlePanelOpen = () => {
     setIsPanelOpen(true);
   };
 
   const handlePanelClose = () => {
-    onNumPpuChange(null)
+    onNumPpuChange(null);
     setIsPanelOpen(false);
+    setFastRealization(null); // Reset the state when the panel is closed
   };
 
   const panelStyle: React.CSSProperties = {
@@ -39,36 +41,53 @@ export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) 
     transform: isPanelOpen ? 'translateX(0)' : 'translateX(120%)',
     transition: 'transform 0.3s ease-out',
   };
-  
-  //Открывает меню при изменении значения пропа
-  useEffect(() => {
 
-      const fetchData = async () =>{
-        if(number != null){
-    const result:[any] = await invoke('get_fast_realization', { number });
-    const fastRealization: FastRealization | null = result[0].data;
-    console.log(fastRealization)
-    handlePanelOpen(); }
-  }
-  fetchData();
+  useEffect(() => {
+    const fetchData = async () => {
+      if (number !== null) {
+        try {
+          const result = await invoke('get_sidebar', { id: number });
+          const data: FastRealization = result as FastRealization;
+          setFastRealization(data);
+          handlePanelOpen();
+        } catch (error) {
+          console.error('Failed to fetch data:', error);
+        }
+      }
+    };
+    fetchData();
   }, [number]);
-  
+
+  const getPhotoSrc = (photo: string | null) => {
+    if (photo) {
+      return `data:image/jpeg;base64,${photo}`;
+    }
+    return 'defaultPhoto';
+  };
+
   return (
     <>
       <Paper style={panelStyle} shadow="sm" radius="xs" p="xl" className={styles.paper}>
-        <img src={photo} alt='Фото'></img>
-        <div className={styles.photoInfo}>
-          <h3>Алексей Туманов</h3>
-          <span>Отдел №11</span>
-          <span>№ ППУ: {number}</span>
-        </div>
-        <div className={styles.mainInfo}>
-          <h3>Дата составления:</h3>
-        </div>
+        {fastRealization && (
+          <>
+            <img src={getPhotoSrc(fastRealization.photo)} alt="Фото" />
+            <div className={styles.photoInfo}>
+              <h3>{fastRealization.author}</h3>
+              <span>Отдел №{fastRealization.department}</span>
+              <span>№ ППУ: {fastRealization.numppu}</span>
+            </div>
+            <div className={styles.mainInfo}>
+              <h3>Проблема:</h3>
+              <p>{fastRealization.problem}</p>
+              <h3>Предложение:</h3>
+              <p>{fastRealization.proposal}</p>
+            </div>
+          </>
+        )}
         <Button onClick={handlePanelClose} className={styles.button}>
-            Закрыть
+          Закрыть
         </Button>
       </Paper>
     </>
   );
-};
+}
