@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
+import styles from '../styles/TableSort.module.css'
 import {
   Table,
   ScrollArea,
@@ -13,10 +14,14 @@ import {
 import { IconSelector, IconChevronDown, IconChevronUp, IconSearch } from '@tabler/icons-react';
 import classes from '../styles/TableSort.module.css';
 
+import { invoke } from "@tauri-apps/api/tauri";
+
 interface RowData {
-  name: string;
-  email: string;
-  company: string;
+  numppu: number;
+  date: string;
+  author: string;
+  object: string;
+  typeppu: string;
 }
 
 interface ThProps {
@@ -47,7 +52,7 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
 function filterData(data: RowData[], search: string) {
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
-    keys(data[0]).some((key) => item[key].toLowerCase().includes(query))
+    keys(data[0]).some((key) => item[key].toString().toLowerCase().includes(query))
   );
 }
 
@@ -63,100 +68,31 @@ function sortData(
 
   return filterData(
     [...data].sort((a, b) => {
-      if (payload.reversed) {
-        return b[sortBy].localeCompare(a[sortBy]);
+      const aValue = a[sortBy];
+      const bValue = b[sortBy];
+
+      if (typeof aValue === 'string' && typeof bValue === 'string') {
+        return payload.reversed ? bValue.localeCompare(aValue) : aValue.localeCompare(bValue);
       }
 
-      return a[sortBy].localeCompare(b[sortBy]);
+      if (typeof aValue === 'number' && typeof bValue === 'number') {
+        return payload.reversed ? bValue - aValue : aValue - bValue;
+      }
+
+      return 0;
     }),
     payload.search
   );
 }
 
-const data = [
-  {
-    name: 'Athena Weissnat',
-    company: 'Little - Rippin',
-    email: 'Elouise.Prohaska@yahoo.com',
-  },
-  {
-    name: 'Deangelo Runolfsson',
-    company: 'Greenfelder - Krajcik',
-    email: 'Kadin_Trantow87@yahoo.com',
-  },
-  {
-    name: 'Danny Carter',
-    company: 'Kohler and Sons',
-    email: 'Marina3@hotmail.com',
-  },
-  {
-    name: 'Trace Tremblay PhD',
-    company: 'Crona, Aufderhar and Senger',
-    email: 'Antonina.Pouros@yahoo.com',
-  },
-  {
-    name: 'Derek Dibbert',
-    company: 'Gottlieb LLC',
-    email: 'Abagail29@hotmail.com',
-  },
-  {
-    name: 'Viola Bernhard',
-    company: 'Funk, Rohan and Kreiger',
-    email: 'Jamie23@hotmail.com',
-  },
-  {
-    name: 'Austin Jacobi',
-    company: 'Botsford - Corwin',
-    email: 'Genesis42@yahoo.com',
-  },
-  {
-    name: 'Hershel Mosciski',
-    company: 'Okuneva, Farrell and Kilback',
-    email: 'Idella.Stehr28@yahoo.com',
-  },
-  {
-    name: 'Mylene Ebert',
-    company: 'Kirlin and Sons',
-    email: 'Hildegard17@hotmail.com',
-  },
-  {
-    name: 'Lou Trantow',
-    company: 'Parisian - Lemke',
-    email: 'Hillard.Barrows1@hotmail.com',
-  },
-  {
-    name: 'Dariana Weimann',
-    company: 'Schowalter - Donnelly',
-    email: 'Colleen80@gmail.com',
-  },
-  {
-    name: 'Dr. Christy Herman',
-    company: 'VonRueden - Labadie',
-    email: 'Lilyan98@gmail.com',
-  },
-  {
-    name: 'Katelin Schuster',
-    company: 'Jacobson - Smitham',
-    email: 'Erich_Brekke76@gmail.com',
-  },
-  {
-    name: 'Melyna Macejkovic',
-    company: 'Schuster LLC',
-    email: 'Kylee4@yahoo.com',
-  },
-  {
-    name: 'Pinkie Rice',
-    company: 'Wolf, Trantow and Zulauf',
-    email: 'Fiona.Kutch@hotmail.com',
-  },
-  {
-    name: 'Brain Kreiger',
-    company: 'Lueilwitz Group',
-    email: 'Rico98@hotmail.com',
-  },
-];
+//Тут данные для заполнения таблицы, нужно заменить на БД
+const data: RowData[] = await invoke('get_table', {});
 
-export function TableSort() {
+interface TableSortProps {
+  onNumPpuChange: (numPpu: number) => void;
+}
+
+export function TableSort({ onNumPpuChange }:TableSortProps) {
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -176,45 +112,62 @@ export function TableSort() {
   };
 
   const rows = sortedData.map((row) => (
-    <Table.Tr key={row.name}>
-      <Table.Td>{row.name}</Table.Td>
-      <Table.Td>{row.email}</Table.Td>
-      <Table.Td>{row.company}</Table.Td>
+
+    <Table.Tr key={row.numppu} className={classes.entry} onClick={() => onNumPpuChange(row.numppu)} >
+      <Table.Td>{row.numppu}</Table.Td>
+      <Table.Td>{row.date}</Table.Td>
+      <Table.Td>{row.author}</Table.Td>
+      <Table.Td>{row.object}</Table.Td>
+      <Table.Td>{row.typeppu}</Table.Td>
     </Table.Tr>
   ));
 
   return (
     <ScrollArea>
-      <TextInput
-        placeholder="Search by any field"
+      <TextInput className={styles.searchField}
+        placeholder="Поиск по всем полям"
         mb="md"
         leftSection={<IconSearch style={{ width: rem(16), height: rem(16) }} stroke={1.5} />}
         value={search}
         onChange={handleSearchChange}
       />
-      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed">
+      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed" className={styles.tableField}>
         <Table.Tbody>
           <Table.Tr>
             <Th
-              sorted={sortBy === 'name'}
+              sorted={sortBy === 'numppu'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('name')}
+              onSort={() => setSorting('numppu')}
             >
-              Name
+              №ППУ
             </Th>
             <Th
-              sorted={sortBy === 'email'}
+              sorted={sortBy === 'date'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('email')}
+              onSort={() => setSorting('date')}
             >
-              Email
+              Дата составления
             </Th>
             <Th
-              sorted={sortBy === 'company'}
+              sorted={sortBy === 'author'}
               reversed={reverseSortDirection}
-              onSort={() => setSorting('company')}
+              onSort={() => setSorting('author')}
             >
-              Company
+              Автор ППУ
+            </Th>
+            <Th
+              sorted={sortBy === 'object'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('object')}
+            >
+              Объект улучшения
+            </Th>
+            <Th
+              sorted={sortBy === 'typeppu'}
+              reversed={reverseSortDirection}
+              onSort={() => setSorting('typeppu')}
+            >
+              Тип ППУ
             </Th>
           </Table.Tr>
         </Table.Tbody>
@@ -225,7 +178,7 @@ export function TableSort() {
             <Table.Tr>
               <Table.Td colSpan={Object.keys(data[0]).length}>
                 <Text fw={500} ta="center">
-                  Nothing found
+                  Ничего не найдено
                 </Text>
               </Table.Td>
             </Table.Tr>

@@ -1,0 +1,112 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.wrapper {
+    overflow-y: hidden;
+    overflow-x: hidden;
+}
+
+
+/*HEADER_CONTAINER CSS*/
+.header_container {
+    border-bottom: 1px solid black;
+    border-radius: 10px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    padding-right: 10px;
+    width: 100%;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    background-color: #95E6D4; /* Add a background color to ensure the header is visible */
+  }
+
+  .header_images img {
+    width: 90px;
+    height: 90px;
+    padding-top: 10px;
+    margin-right: 20px;
+  }
+
+  .header_title p {
+    color: blue;
+    padding: 0;
+    text-align: center;
+  }
+
+  .header_title .header_title_span1 {
+    font-weight: 600;
+    font-size: 70px;
+    vertical-align: top;
+    margin-bottom: 0;
+    line-height: 1;
+  }
+
+  .header_title .header_title_span2 {
+    vertical-align: top;
+    margin-top: 0;
+    line-height: 1
+  }
+
+/*MAIN_CONTAINER CSS*/
+
+.main_container {
+    margin-top: 100px;
+}
+
+.clickButton {
+    display: none;
+}
+
+
+.paper {
+  border: 1px solid black;
+  border-radius: 10px;
+  display: flex;
+  flex-wrap: wrap;
+}
+.paper img {
+  border: 1px solid black;
+  padding: 5px;
+  width: 100px;
+  height: 120px;
+  margin-right: 20px;
+}
+.paper .photoInfo {
+  height: 120px;
+  width: 80%;
+  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.mainInfo {
+  margin-top: 10px;
+}
+
+.button {
+  --opacity: 1;
+  margin-top: auto;
+  align-self: flex-end;
+  width: 100%;
+  text-align: center;
+  background-color: #95E6D4;
+  transition: all 500ms ease;
+  opacity: var(--opacity);
+
+  &:hover {
+    background-color: #95E6D4;
+    --opacity: 0.7;
+  }
+
+  &:active {
+    background-color: #95E6D4;
+    --opacity: 0.9;
+  }
+}

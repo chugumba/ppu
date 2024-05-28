@@ -16,3 +16,36 @@
     height: rem(21px);
     border-radius: rem(21px);
   }
+
+  /*Это просто тест, можешь удалять*/
+  .entry {
+    cursor: pointer;
+    --opacity:1;
+    transition: all 500ms ease;
+    opacity: var(--opacity);
+
+    &:hover {
+      background-color: #666;
+    }
+
+    &:active {
+      background-color: red;
+    }
+  }
+
+  .searchField {
+    width: 80%;
+    margin-top: 30px;
+    margin-left: 10%;
+    margin-right: 10%;
+    margin-bottom: 30px;
+  }
+
+  .tableField {
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    flex-grow: 1;
+    border: 1px solid black;
+    border-radius: 10px;
+  }
