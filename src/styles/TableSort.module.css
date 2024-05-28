@@ -45,6 +45,7 @@
     width: 80%;
     margin-left: 10%;
     margin-right: 10%;
+    flex-grow: 1;
     border: 1px solid black;
     border-radius: 10px;
   }

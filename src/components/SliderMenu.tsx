@@ -1,6 +1,7 @@
 import { Button, Paper } from '@mantine/core';
 import React, { useState, useEffect } from 'react';
-//import style from '../styles/styles.module.css';
+import styles from '../styles/styles.module.css';
+import photo from '../images/photo.jpg';
 
 interface SliderMenuProps {
   number: number | null;
@@ -20,11 +21,11 @@ export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) 
 
   const panelStyle: React.CSSProperties = {
     position: 'fixed',
-    top: 0,
-    right: 0,
-    bottom: 0,
+    top: 120,
+    right: 20,
+    bottom: 30,
     width: '50%',
-    transform: isPanelOpen ? 'translateX(0)' : 'translateX(100%)',
+    transform: isPanelOpen ? 'translateX(0)' : 'translateX(120%)',
     transition: 'transform 0.3s ease-out',
   };
   
@@ -36,11 +37,19 @@ export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) 
   
   return (
     <>
-      <Paper style={panelStyle} shadow="sm" radius="xs" p="xl">
-        <Button onClick={handlePanelClose}>
-          Закрыть панель
+      <Paper style={panelStyle} shadow="sm" radius="xs" p="xl" className={styles.paper}>
+        <img src={photo} alt='Фото'></img>
+        <div className={styles.photoInfo}>
+          <h3>Алексей Туманов</h3>
+          <span>Отдел №11</span>
+          <span>№ ППУ: {number}</span>
+        </div>
+        <div className={styles.mainInfo}>
+          <h3>Дата составления:</h3>
+        </div>
+        <Button onClick={handlePanelClose} className={styles.button}>
+            Закрыть
         </Button>
-        <p>Number: {number}</p>
       </Paper>
     </>
   );
