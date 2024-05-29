@@ -185,7 +185,7 @@ export function TableSort({ onNumPpuChange }:TableSortProps) {
             rows
           ) : (
             <Table.Tr>
-              <Table.Td colSpan={data === null ? 0 : Object.keys(data[0]).length}>
+              <Table.Td colSpan={data === null ? Object.keys(data[0]).length : 0}>
                 <Text fw={500} ta="center">
                   Ничего не найдено
                 </Text>
