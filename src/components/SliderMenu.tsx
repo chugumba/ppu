@@ -70,7 +70,7 @@ export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) 
       <Paper style={panelStyle} shadow="sm" radius="xs" p="xl" className={styles.paper}>
         {fastRealization && (
           <>
-            <img src={getPhotoSrc(fastRealization.photo)} alt="Фото" />
+            <img src={getPhotoSrc(fastRealization.photo)} alt="Фото" className={styles.paper}/>
             <div className={styles.photoInfo}>
               <h3>{fastRealization.author}</h3>
               <span>Отдел №{fastRealization.department}</span>

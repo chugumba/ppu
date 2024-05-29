@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from '../styles/TableSort.module.css'
 import {
   Table,
@@ -50,6 +50,7 @@ function Th({ children, reversed, sorted, onSort }: ThProps) {
 }
 
 function filterData(data: RowData[], search: string) {
+  if (!data.length) return [];
   const query = search.toLowerCase().trim();
   return data.filter((item) =>
     keys(data[0]).some((key) => item[key].toString().toLowerCase().includes(query))
@@ -85,14 +86,22 @@ function sortData(
   );
 }
 
-//Получение данных из базы данных
-const data: RowData[] = await invoke('get_table', {});
-
 interface TableSortProps {
   onNumPpuChange: (numPpu: number) => void;
 }
 
 export function TableSort({ onNumPpuChange }:TableSortProps) {
+  const [data, setData] = useState<RowData[]>([]);
+
+  useEffect(() => {
+    async function fetchData() {
+      const response:RowData[] = await invoke('get_table', {});
+      setData(response);
+      setSortedData(response);
+    }
+    fetchData();
+  }, []);
+  
   const [search, setSearch] = useState('');
   const [sortedData, setSortedData] = useState(data);
   const [sortBy, setSortBy] = useState<keyof RowData | null>(null);
@@ -176,7 +185,7 @@ export function TableSort({ onNumPpuChange }:TableSortProps) {
             rows
           ) : (
             <Table.Tr>
-              <Table.Td colSpan={Object.keys(data[0]).length}>
+              <Table.Td colSpan={data === null ? 0 : Object.keys(data[0]).length}>
                 <Text fw={500} ta="center">
                   Ничего не найдено
                 </Text>
