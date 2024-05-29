@@ -85,7 +85,7 @@ function sortData(
   );
 }
 
-//Тут данные для заполнения таблицы, нужно заменить на БД
+//Получение данных из базы данных
 const data: RowData[] = await invoke('get_table', {});
 
 interface TableSortProps {
@@ -131,7 +131,7 @@ export function TableSort({ onNumPpuChange }:TableSortProps) {
         value={search}
         onChange={handleSearchChange}
       />
-      <Table horizontalSpacing="md" verticalSpacing="xs" miw={700} layout="fixed" className={styles.tableField}>
+      <Table horizontalSpacing="md" verticalSpacing="xs" layout="fixed" className={styles.tableField} stickyHeader striped withTableBorder withColumnBorders>
         <Table.Tbody>
           <Table.Tr>
             <Th
