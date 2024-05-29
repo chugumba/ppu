@@ -6,9 +6,6 @@
     width: 100%;
     padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
   
-    @mixin hover {
-      background-color: light-dark(var(--mantine-color-gray-0), var(--mantine-color-dark-6));
-    }
   }
   
   .icon {
@@ -45,7 +42,6 @@
     width: 80%;
     margin-left: 10%;
     margin-right: 10%;
-    flex-grow: 1;
-    border: 1px solid black;
-    border-radius: 10px;
+    /*border: 1px solid black;
+    border-radius: 10px;*/
   }

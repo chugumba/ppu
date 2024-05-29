@@ -37,7 +37,7 @@ export default function SliderMenu({ number, onNumPpuChange }: SliderMenuProps) 
     top: 120,
     right: 20,
     bottom: 30,
-    width: '50%',
+    width: '35%',
     transform: isPanelOpen ? 'translateX(0)' : 'translateX(120%)',
     transition: 'transform 0.3s ease-out',
   };
